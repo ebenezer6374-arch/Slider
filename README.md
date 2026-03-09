@@ -1,2 +1,2 @@
 # hello-world
-To practice git workflow
+To practice github  workflow
