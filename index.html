@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Image Slider</title>
+
+<style>
+
+/* Reset */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+/* Page Layout */
+
+body {
+
+    background: #f3f4f6;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    height: 100vh;
+
+}
+
+/* Slider Container */
+
+.slider {
+
+    width: 700px;
+
+    background: white;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+}
+
+/* Image Wrapper */
+
+.slides {
+
+    display: flex;
+
+    transition: transform 0.4s ease-in-out;
+
+}
+
+/* Images */
+
+.slide {
+
+    min-width: 100%;
+
+}
+
+.slide img {
+
+    width: 100%;
+
+    height: 400px;
+
+    object-fit: cover;
+
+}
+
+/* Navigation Buttons */
+
+.nav-button {
+
+    position: absolute;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    background: rgba(0,0,0,0.5);
+
+    color: white;
+
+    border: none;
+
+    padding: 10px 14px;
+
+    cursor: pointer;
+
+    border-radius: 6px;
+
+    font-size: 18px;
+
+}
+
+.prev {
+
+    left: 15px;
+
+}
+
+.next {
+
+    right: 15px;
+
+}
+
+/* Wrapper Positioning */
+
+.slider-wrapper {
+
+    position: relative;
+
+}
+
+/* Dots */
+
+.dots {
+
+    display: flex;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    padding: 12px;
+
+}
+
+/* Dot Style */
+
+.dot {
+
+    width: 10px;
+
+    height: 10px;
+
+    border-radius: 50%;
+
+    background: #d1d5db;
+
+    cursor: pointer;
+
+}
+
+.dot.active {
+
+    background: #2563eb;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="slider">
+
+    <div class="slider-wrapper">
+
+        <div class="slides" id="slides">
+
+            <div class="slide">
+                <img src="https://picsum.photos/id/1015/800/400">
+            </div>
+
+            <div class="slide">
+                <img src="https://picsum.photos/id/1016/800/400">
+            </div>
+
+            <div class="slide">
+                <img src="https://picsum.photos/id/1018/800/400">
+            </div>
+
+            <div class="slide">
+                <img src="https://picsum.photos/id/1020/800/400">
+            </div>
+
+            <div class="slide">
+                <img src="https://picsum.photos/id/1024/800/400">
+            </div>
+
+        </div>
+
+        <!-- Buttons -->
+
+        <button class="nav-button prev" onclick="prevSlide()">
+            ❮
+        </button>
+
+        <button class="nav-button next" onclick="nextSlide()">
+            ❯
+        </button>
+
+    </div>
+
+    <!-- Dots -->
+
+    <div class="dots" id="dots"></div>
+
+</div>
+
+<script>
+
+/* Variables */
+
+let currentIndex = 0;
+
+const slides =
+    document.getElementById("slides");
+
+const totalSlides =
+    document.querySelectorAll(".slide").length;
+
+const dotsContainer =
+    document.getElementById("dots");
+
+/* Create Dots */
+
+for (let i = 0; i < totalSlides; i++) {
+
+    let dot =
+        document.createElement("div");
+
+    dot.classList.add("dot");
+
+    if (i === 0) {
+        dot.classList.add("active");
+    }
+
+    dot.addEventListener("click", () => {
+
+        currentIndex = i;
+
+        updateSlider();
+
+    });
+
+    dotsContainer.appendChild(dot);
+
+}
+
+/* Update Slider */
+
+function updateSlider() {
+
+    slides.style.transform =
+        `translateX(-${currentIndex * 100}%)`;
+
+    updateDots();
+
+}
+
+/* Update Dots */
+
+function updateDots() {
+
+    let dots =
+        document.querySelectorAll(".dot");
+
+    dots.forEach(dot =>
+        dot.classList.remove("active")
+    );
+
+    dots[currentIndex]
+        .classList.add("active");
+
+}
+
+/* Next */
+
+function nextSlide() {
+
+    currentIndex++;
+
+    if (currentIndex >= totalSlides) {
+
+        currentIndex = 0;
+
+    }
+
+    updateSlider();
+
+}
+
+/* Previous */
+
+function prevSlide() {
+
+    currentIndex--;
+
+    if (currentIndex < 0) {
+
+        currentIndex = totalSlides - 1;
+
+    }
+
+    updateSlider();
+
+}
+
+/* Keyboard Navigation */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "ArrowRight") {
+
+            nextSlide();
+
+        }
+
+        if (event.key === "ArrowLeft") {
+
+            prevSlide();
+
+        }
+
+    }
+
+);
+
+</script>
+
+</body>
+
+</html>
